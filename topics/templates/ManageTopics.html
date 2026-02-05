@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManageTopics</title>
+</head>
+<body>
+    <h1>ManageTopics</h1>
+    <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+    <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+
+    <h2>Create Topic</h2>
+    <form method="post">
+        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+        <label>Topic Name</label><br> <!--displays Topic Name and then creates space using br-->
+        <input type="text" name="name"><br><br> <!--takes text input-->
+
+        <button type="submit">Create</button><br> <!--button to submit form-->
+
+        {% for message in messages %} <!--display error messages-->
+         {{message}} 
+        {% endfor %}
+    </form>
+
+    <h2>Topics</h2>
+        <ul> <!--create unordered list to display topics-->
+            {% for topic in topics %} <!--all topics retrived using django template language for loop-->
+            <li> <!--create item in the list-->
+                {{topic.name}} <!--display the name of current topic in the for loop-->
+                <form method="post"> <!--create a form for each topic, to be able to post topics id to views.py file in order to delete topic-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <input type="hidden" name="topicID" value="{{topic.id}}"> <!--hidden field in form, user shouldnt be able to enter this. topicid of current topic in for loop is extracted using topic.id-->
+                    <button type="submit">Delete</button> <!--button to submit form-->
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+</body>
+</html>

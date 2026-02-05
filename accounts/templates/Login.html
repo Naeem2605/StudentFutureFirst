@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login page</h1>
+    <a href="{% url 'Homepage' %}">Homepage</a>
+    <a href="{% url 'Register' %}">Register</a>
+
+    <form method="post">
+        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+        <label>Username</label><br> <!--displays username and then creates space using br-->
+        <input type="text" name="username" required><br><br> <!--takes text input and it must be enetered-->
+
+        <label>Password</label><br>
+        <input type="password" name="password" required><br><br> <!--hides password while entered-->
+
+        <button type="submit">Login</button> <!--button to submit form-->
+
+        {% for message in messages %} <!--display error messages-->
+         {{message}}
+        {% endfor %}
+    </form>
+</body>
+</html>

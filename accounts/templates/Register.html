@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    <h1>Staff Registration page</h1>
+    <a href="{% url 'Homepage' %}">Homepage</a>
+    <a href="{% url 'Login' %}">Login</a>
+
+    <form method="post"> 
+        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+        <label>Username</label><br> <!--displays username and then creates space using br-->
+        <input type="text" name="username" required><br><br> <!--takes text input and it must be enetered-->
+
+        <label>First Name</label><br>
+        <input type="text" name="firstName" required><br><br>
+
+        <label>Last Name</label><br>
+        <input type="text" name="lastName" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br> <!--takes email format input only-->
+
+        <label>Password</label><br>
+        <input type="password" name="password" required><br><br> <!--hides password while entered-->
+
+        <label>StaffID</label><br>
+        <input type="text" name="staffID" required><br><br>
+
+        <button type="submit">Register</button> <!--button to submit form-->
+
+        {% for message in messages %} <!--display error messages-->
+         {{message}}
+        {% endfor %}
+    </form>
+</body>
+</html>

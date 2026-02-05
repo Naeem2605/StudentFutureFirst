@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CreateOrDeleteStudent</title>
+    {% load static %}
+</head>
+<body>
+    <h1>CreateOrDeleteStudent</h1>
+    <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+    <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+
+    <h2>Create Student</h2>
+    <form method="post"> 
+        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+        <label>Username</label><br> <!--displays username and then creates space using br-->
+        <input type="text" name="username" required><br><br> <!--takes text input and it must be enetered-->
+
+        <label>First Name</label><br>
+        <input type="text" name="firstName" required><br><br>
+
+        <label>Last Name</label><br>
+        <input type="text" name="lastName" required><br><br>
+
+        <label>Email</label><br>
+        <input type="email" name="email" required><br><br> <!--takes email format input only-->
+
+        <label>Password</label><br>
+        <input type="password" name="password" required><br><br> <!--hides password while entered-->
+
+        <label>StudentID</label><br>
+        <input type="text" name="studentID" required><br><br>
+
+        <label>Select Modules</label><br>
+        {% for module in modules %} <!--iterate through entire Module table-->
+           <input type="checkbox" name="modulesIDs" value="{{module.id}}"> <!--current modules id is passed if chosen-->
+           {{module.name}} - {{module.code}} <!--display modules name and code-->
+        {% endfor %}
+
+        <button type="submit">Create</button> <!--button to submit form-->
+
+        {% for message in messages %} <!--display error messages-->
+         {{message}}
+        {% endfor %}
+    </form>
+
+    <h2>Students</h2>
+    <ul> <!--create unordered list to display students-->
+        {% for student in students %} <!--all students retrived using django template language for loop-->
+        <li> <!--create item in the list-->
+            {{student.studentID}} - {{student.user.first_name}} - {{student.user.last_name}} <!--display the names and studentid of current student in the for loop-->
+            <form method="post"> <!--create a form for each student, to be able to post students id to views.py file in order to delete student-->
+                {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                <input type="hidden" name="studentID" value="{{student.id}}"> <!--hidden field in form, user shouldnt be able to enter this. studentid of current topic in for loop is extracted using student.id-->
+                <button type="submit">Delete</button> <!--button to submit form-->
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

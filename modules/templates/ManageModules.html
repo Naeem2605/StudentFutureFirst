@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ManageModules</title>
+</head>
+<body>
+    <h1>ManageModules</h1>
+    <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+    <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+
+    <h2>Create Module</h2>
+    <form method="post">
+        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+        <label>Module Name</label><br> <!--displays Module Name and then creates space using br-->
+        <input type="text" name="name"><br><br> <!--takes text input-->
+
+        <label>Module Code</label><br>
+        <input type="text" name="code"><br><br>
+
+        <label>Module Description</label><br>
+        <input type="text" name="description"><br><br>
+
+        <button type="submit">Create</button><br> <!--button to submit form-->
+
+        {% for message in messages %} <!--display error messages-->
+         {{message}} 
+        {% endfor %}
+    </form>
+
+    <h2>Modules</h2>
+
+        <ul> <!--create unordered list to display modules-->
+            {% for module in modules %} <!--all modules retrived using django template language for loop-->
+            <li> <!--create item in the list-->
+                {{module.name}} <!--display the name of current module in the for loop-->
+                <form method="post"> <!--create a form for each module, to be able to post modules id to views.py file in order to delete module-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <input type="hidden" name="moduleID" value="{{module.id}}"> <!--hidden field in form, user shouldnt be able to enter this. moduleid of current module in for loop is extracted using module.id-->
+                    <button type="submit">Delete</button> <!--button to submit form-->
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+</body>
+</html>

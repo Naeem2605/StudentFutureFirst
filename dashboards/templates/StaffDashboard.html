@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StaffDashboard</title>
+</head>
+<body>
+    <h1>StaffDashboard</h1>
+    <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+    <a href="{% url 'StaffDetails' %}">Staff Details</a>
+    <a href="{% url 'StaffAddMarks' %}">Add Marks</a>
+    <a href="{% url 'ManageModules' %}">Manage Modules</a>
+    <a href="{% url 'ManageTopics' %}">Manage Topics</a>
+    <a href="{% url 'CreateOrDeleteStudent' %}">Create or delete Student</a>
+
+</body>
+</html>

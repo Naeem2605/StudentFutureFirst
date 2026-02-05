@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudentDashboard</title>
+</head>
+<body>
+    <h1>StudentDashboard</h1>
+    <a href="{% url 'Logout' %}">Logout</a> <!--loads logout url to logout-->
+    <a href="{% url 'StudentDetails' %}">Student Details</a>
+    <a href="{% url 'StudentMarks' %}">Student Marks</a>
+    <a href="{% url 'RecommendLecturer' %}">Recommend Lecturer</a>
+    <a href="{% url 'RecommendModule' %}">Recommend Module</a>
+
+    <h2>Welcome back {{student.user.first_name}}</h2> <!--display students first name-->
+
+    <h3>Your Modules</h3>
+
+    <ul>
+            {% for modulemark in moduleMarks%} <!--loop through modules in join table modulemark-->
+            <li>
+                {{modulemark.module.code}} - {{modulemark.module.name}} - {{modulemark.module.description}}<!--display module info-->
+            </li>
+            {% endfor %}
+    </ul>
+
+
+
+</body>
+</html>
