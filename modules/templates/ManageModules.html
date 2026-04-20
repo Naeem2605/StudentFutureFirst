@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Modules</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Manage Modules</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+         <div class="message">{{message}}</div> 
+        {% endfor %}
+
+        <div class="box">
+            <h2>Create Module</h2>
+            <div class="box-item">
+                <form method="post">
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Module Name</label><br> <!--displays Module Name and then creates space using br-->
+                    <input type="text" name="name" required><br><br> <!--takes text input-->
+
+                    <label>Module Code</label><br>
+                    <input type="text" name="code" required><br><br>
+
+                    <label>Module Description</label><br>
+                    <input type="text" name="description" required><br><br>
+
+                    <label>Select Related Topics:</label><br><br>
+                    <div class="checkbox">
+                        {% for topic in topics %} <!--display all available topics-->
+                         <li> <!--display checkboxes in a list-->
+                           <input type="checkbox" name="topicsIDs" value="{{topic.id}}"> <!--current topics id is passed if chosen-->
+                           {{topic.name}} <!--display topics name--> 
+                         </li>
+                        {% endfor %}
+                    </div>
+                    <button type="submit">Create</button><br> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+
+        <div class="scroll-box">
+            <h2>Modules</h2>
+            {% for module in modules %} <!--all modules retrived using django template language for loop-->
+            <div class="box-item">
+                {{module.name}} - {{module.code}} - {{module.description}}<br><br><!--display module info-->
+                <form method="post"> <!--create a form for each module, to be able to post modules id to views.py file in order to delete module-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <input type="hidden" name="moduleID" value="{{module.id}}"> <!--hidden field in form, user shouldnt be able to enter this. moduleid of current module in for loop is extracted using module.id-->
+                    <button type="submit">Delete</button> <!--button to submit form-->
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

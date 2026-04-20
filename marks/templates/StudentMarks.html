@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Marks</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StudentDashboard' %}">Student Dashboard</a> <!-- calls studentdashboard url -->
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Your Marks</h1>
+        </div>
+
+        <div class="box">
+            {% if classification is not None%} <!--checks to see if classification has been calculated yet-->
+                <h3>Your overall average is {{overallAverage}}</h3> <!--displays overall average-->
+                <h3>You are currently averaging a {{classification}}</h3> 
+            {% else %}
+                <h3>No overall average yet</h3>
+            {% endif%}
+        </div>
+
+        <div class="scroll-box">
+            <h2>Your module marks</h2>
+            {% for moduleMark in moduleMarks %} <!--iterate through moduleMarks-->
+            <div class="box-item">
+                {{moduleMark.module.name}} - {{moduleMark.module.code}} - {{moduleMark.module.description}}<br><!--display module info-->
+                Mark1: {{moduleMark.mark1}} - Mark2: {{moduleMark.mark2}} {% if moduleMark.avg is not None %} - Module Average: {{moduleMark.avg}} {% endif %} <!--if statement used to only display average if its calculated-->
+            <br><br>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

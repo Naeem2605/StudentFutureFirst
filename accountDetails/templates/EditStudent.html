@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Student</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+        <a href="{% url 'ManageStudents' %}">Manage Students</a> <!--calls managestudents url-->
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Edit Student</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+         <div class="message">{{message}}</div>
+        {% endfor %}
+
+        <div class="box">
+            <h2>Editing: {{student.user.first_name}} {{student.user.last_name}}</h2> <!--display student being edited details-->
+            <div class="box-item">
+                <p>Student ID: {{student.studentID}}</p> <!--display students studentID-->
+                <p>Username: {{student.user.username}}</p>
+
+                <form method="post"> <!--form to update student details-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>First Name</label><br>
+                    <input type="text" name="firstName" value="{{student.user.first_name}}" required><br><br> <!--display current student first name in textbox-->
+
+                    <label>Last Name</label><br>
+                    <input type="text" name="lastName" value="{{student.user.last_name}}" required><br><br>
+
+                    <label>Student Email</label><br>
+                    <input type="text" name="email" value="{{student.user.email}}" required><br><br>
+
+                    <button type="submit">Update</button> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+
+        <div class="scroll-box">
+            <h2>Manage Student's Modules</h2>
+           
+            {% for module in modules %} <!--all modules retrived using django template language for loop-->
+            <div class="box-item">
+                {{module.name}} - {{module.code}} - {{module.description}}<br><br> <!--display the module details-->
+                <form method="post"> <!--create a form for each module, to be able to post modules id to views.py file in order to add or remove it-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+                    <input type="hidden" name="moduleID" value="{{module.id}}"> <!--hidden field in form, user shouldnt be able to enter this. moduleid of current module in for loop is extracted using module.id-->
+                    {% if module in studentsModules %} <!--checks if student already takes this module to decide what button to show-->
+                    <button type="submit">Remove</button> <!--remove button shown if student takes this module already-->
+                    {% else %}
+                    <button type="submit">Add</button>
+                    {% endif %}
+                </form>
+            <br>
+            </div>
+            {% endfor %}
+            
+        </div>
+    </div>
+</body>
+</html>

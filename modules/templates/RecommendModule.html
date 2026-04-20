@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend Module</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StudentDashboard' %}">Student Dashboard</a> <!-- calls studentdashboard url -->
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Recommend Modules</h1>
+        </div>
+    
+        {% for message in messages %} <!--display messages-->
+            <div class="message">{{message}}</div>
+        {% endfor %}
+
+        <div class="box">
+            <h2>Find Modules By Topic</h2>
+            <h3>Select one or more topics to get recommended modules</h3>
+
+            <div class="box-item">
+                <form method="post">
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+                    <label>Select Topics</label><br><br>
+                    <div class="checkbox">
+                        {% for topic in topics %} <!--display all available topics-->
+                        <li> <!--display checkboxes in a list-->
+                           <input type="checkbox" name="topicsIDs" value="{{topic.id}}"> <!--current topics id is passed if chosen-->
+                           {{topic.name}} <!--display topics name--> 
+                        </li>
+                        {% endfor %}
+                    </div>
+                    <button type="submit">Find Modules</button><br> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+
+        
+
+        {% if recommendedModules is not None %} <!--shows only if search is made-->
+            <div class="scroll-box">
+                <h2>Recommended Modules</h2>
+                {% if recommendedModules %} <!--check if any modules found-->   
+                    {% for module in  recommendedModules %} <!--iterates through all modules which relate to the topic entered-->
+                    <div class="box-item">
+                        {{module.name}} - {{module.code}} - {{module.description}}<br><!--display module info-->
+                        Topics:
+                        {% for topic in module.topics.all %}<!--retrieve all topics related to the current module in the loop and iterate through the topics-->
+                            {{topic.name}} - <!--display the name of the topic-->
+                        {% endfor%}
+                    </div>
+                    {% endfor %}
+                {% else %} 
+                    <h3>No recommended modules found for the selected topics</h3>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

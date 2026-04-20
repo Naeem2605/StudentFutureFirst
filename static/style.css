@@ -1,0 +1,206 @@
+html { /*css for the html page in general*/
+    background-color: dimgrey; /*change backround colour*/
+    padding-top: 80px; /*add space from the top to separate navbar from items below*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.navbar{ /*css for nav bar links container*/
+   display: flex; /*allows items in navbar to fill out the space in the navbar*/
+   padding: 18px right;/*adds space within the navbar*/
+   align-items: center;
+   gap: 5px; /*space between each link*/
+   background-color: lightgrey; /* make backround of the navbar light grey*/
+   position: fixed; /*keeps navbar fixed even when scrolling*/
+   width: 100%; /*makes navbar take up entire width of screen*/
+   top: 0%; /*makes navbar sit against the top of screen*/
+   left: 0%; /*makes navbar sit agasint the left sie of the screen flush*/
+   right: 0%; /*makes navbar sit agasint the right sie of the screen flush*/
+   border: 2px solid darkgrey; /*create border aound navbar*/
+}
+
+.navbar a { /*css for each link in navbar*/
+    padding: 8px 10px; /*add spacing inside navbar buttons*/
+    background-color: white; /*backround colour of navbar button*/
+    color: darkgrey;/*colour of navbar button text*/
+    border-radius: 20px; /*round buttons*/
+    text-decoration: none;/*remove underline of links*/
+    margin: 10px; /*create space between links*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    border: 2px solid transparent; /*create invisible border around button to prevent it expanding on hover*/
+    font-size: 13px;
+}
+
+.navbar a:hover { /*css to change colour when hovering over link*/
+    background-color: darkgrey; /*change backround colour when hovering over link*/
+    color: whitesmoke; /*change colour of text when hovering over it*/
+    border: 2px solid grey; /*create border around button*/
+}
+
+.centered-box{ /*css for home page box*/
+    background-color: lightgray; /*backround colour of box*/
+    border-radius: 13px; /*round corners*/
+    max-width: 390px; /*max width the box can be, prevents getting too big*/
+    padding: 45px; /*create space inside box*/
+    margin: 60px auto; /*push box down by 65px and center it */
+    text-align: center; /*center text*/
+}
+
+.centered-box a { /*css for homepage link buttons*/
+    background-color: white; /*colour of button backrounds*/
+    color: darkgrey; /*colour of text in button*/
+    padding: 20px; /*create space inside each button*/
+    border-radius: 20px; /*round each link button*/
+    text-decoration: none;/*remove underline of links*/
+    margin: 11px; /*create space between links*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 19px;
+    border: 2px solid transparent;
+}
+
+.centered-box a:hover { /*css for homepage button hovering*/
+    background-color: darkgrey; /*change backround colour when hovering over link*/
+    color: whitesmoke; /*change colour of text when hovering over it*/
+    border: 2px solid grey;
+}
+
+.centered-box h1 { /*css for homepage header 1*/
+    margin-bottom: 132px; /*create space under header1*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif; /*font*/
+    color: grey;
+}
+
+.message { /*css for messages*/
+    background-color: lightgrey; /*make backround colour of message box*/
+    border-radius: 11px; /*round the box*/
+    padding: 12px; /*add space within the message box*/
+    color: grey; /*limit the max width of the box*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif; /*font*/
+    font-size: 14px;
+    margin-bottom: 7px; /*create space under each message to space them*/
+}
+
+.box { /*css for boxes on screen*/
+    background-color: lightgrey; /*color of box*/
+    border-radius: 11px;/*round box*/
+    padding: 24px; /*add space within box*/
+    margin-bottom: 50px; /*add space under box*/
+}
+
+.scroll-box { /*css for scollable boxes*/
+    background-color: lightgrey; /*color of box*/
+    border-radius: 11px;/*round box*/
+    padding: 24px; /*add space within box*/
+    max-height: 410px; /*limit height of the box*/
+    overflow: auto; /*add scroll bar to box*/
+    
+}
+
+.box-item { /*css for items found in boxes*/
+    background-color: white;
+    color: grey; /*css for text in the boxes item*/
+    border-radius: 11px; /*rounds item*/
+    padding: 14px; /*adds spcae inside item */
+    margin-bottom: 11px; /*adds space between item below*/
+    width: 52%;
+}
+
+.box-item a { /*css for box item links*/
+    text-decoration: none; /*remove underlining*/
+    background-color: darkgrey; 
+    color: white;
+    padding: 8px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+.box-item a:hover { /*css for hovering over box itms links*/
+    background-color: grey; /*change backround colour when hovering over link*/
+    color: white; /*change colour of text when hovering over it*/
+    border: 2px solid grey; /*change border colour when hovering*/
+}
+
+.box-item button { /*css for buttons in box item*/
+    background-color: darkgrey;
+    color: white;
+    border: 2px solid transparent; /*transparent border to avoid buton moving when hovering*/
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer; /*change cursor to pointer when hovering over button*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 14px;
+}
+
+.box-item button:hover {
+    background-color: grey;
+    color: white;
+    border: 2px solid grey;
+}
+
+.box-item label{
+    color: grey;
+    
+}
+
+.page-content { /*css for containing page content within a max width*/
+    max-width: 1000px;
+    margin: 10px auto; /*centres the page contet and pushes down content by 10px*/
+}
+
+input[type="text"], /*css for input feilds specified*/
+input[type="password"],
+input[type="email"],
+input[type="time"]{
+    padding: 4px; /*creates space inside input box*/
+    border-radius: 9px; /*rounds input box*/
+    border: 1px solid grey; /*create border around input field*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: grey;/*color the text inside input fields*/
+}
+
+select { /*css for styling select dropdowns*/
+    padding: 4px; /*creates space inside input box*/
+    border-radius: 9px; /*rounds input box*/
+    border: 1px solid grey; /*create border around input field*/
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    color: grey;/*color the text inside input fields*/
+}
+
+label { /*css for labels*/
+    color: grey;
+}
+
+.checkbox {
+    margin-bottom: 15px; /*create space under checkbox*/   
+}
+
+.checkbox li {
+    list-style: none; /*remove bullet point from list items in checkboxes*/
+}
+
+input[type="checkbox"]{ /*css for actaul check box*/
+    cursor: pointer;
+}
+
+h1 {
+    font-size: 29px;
+    color: white;
+}
+
+h2 {
+    font-size: 20px;
+    color: white;
+}
+
+h3 {
+    font-size: 17px;
+    color: white;
+}
+
+li { 
+    color: grey;
+    list-style: none; /*remove bullet point from list items*/
+}
+
+

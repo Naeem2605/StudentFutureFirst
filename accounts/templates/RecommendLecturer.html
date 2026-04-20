@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommend Lecturer</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StudentDashboard' %}">Student Dashboard</a> <!-- calls studentdashboard url -->
+    </div>
+
+    <div class="page-content">
+      <div class="box">
+        <h1>Recommend Lecturer</h1>
+      </div>
+
+      {% for message in messages %} <!--display error messages-->
+        <div class="message">{{message}}</div> 
+      {% endfor %}
+
+      <div class="box">
+        <h2>Find Lecturers By Topic</h2>
+        <h3>Select one or more topics to get recommended lecturers</h3>
+
+        <div class="box-item">
+          <form method="post">
+              {% csrf_token %} <!--protects against cross site request forgeries-->
+              <label>Select Topics</label><br><br>
+              <div class="checkbox">
+                {% for topic in topics %} <!--display all available topics-->
+                <li> <!--display checkboxes in a list-->
+                  <input type="checkbox" name="topicsIDs" value="{{topic.id}}"> <!--current topics id is passed if chosen-->
+                  {{topic.name}} <!--display topics name--> 
+                </li>
+                {% endfor %}
+              </div>
+              <button type="submit">Find Lecturers</button><br> <!--button to submit form-->
+          </form>
+        </div>
+      </div>
+
+        {% if recommendedLecturers is not None %} <!--shows only if search is made-->
+          <div class="scroll-box">
+            <h2>Recommended Lecturers</h2>
+            {% if recommendedLecturers %} <!--check if any lecturers found-->                
+                    {% for Lecturer in  recommendedLecturers %} <!--iterates through all staff which relate to the topic entered (called lecturers but no specialisation for staff so i use staff and lecturers interchangebly)-->
+                    <div class="box-item">
+                        Name: {{Lecturer.user.first_name}} {{Lecturer.user.last_name}}<br><!--display module info-->
+                        Staff's Email: {{Lecturer.user.email}}<br>
+                        {%if Lecturer.officeRoom%} <!-- if staff has a ofice room in their record the display if-->
+                          Office Room: {{Lecturer.officeRoom}} <br>
+                        {% else %}
+                          Office Room: No Location Given<br> <!--if staff do not have an office room then display this instead-->
+                        {% endif %}
+                        Topics:
+                        {% for topic in Lecturer.topics.all %}<!--retrieve all topics related to the current Lecturer/staff in the loop and iterate through the topics-->
+                          {{topic.name}} - <!--display the name of the topic-->
+                        {% endfor%} <br><br>
+
+                        Availability Slots:<br><br>
+                        {% if Lecturer.availability.all%} <!--display all of a lecturers availabilty slots if any exists-->                    
+                          {% for availability in Lecturer.availability.all%} <!--iterate through the lecturers availability-->                           
+                              {{availability.day}} - {{availability.startTime}} - {{availability.endTime}} <!--display the booking details-->
+                              {% if availability.student is None %} <!--check to see if its booked and if its not then display button to book-->
+                                <form method="post">
+                                   {% csrf_token %} <!--protects against cross site request forgeries-->
+                                   <input type="hidden" name="availabilityID" value="{{availability.id}}">
+                                   <button type="submit">Book Slot</button>
+                                </form><br>
+                              {% else %}
+                                Already Booked <br><br> <!--if booked display this next to the booking-->
+                              {% endif%}                           
+                         {% endfor %}                       
+                        {% else %}
+                          No Slots Available To Book<br><br><!--if staff has no bookings slots then display this-->
+                        {% endif %}
+                    </div> 
+                    {% endfor %}               
+            {% else %} 
+                <h3>No recommended lecturers found for the selected topics</h3> <!--if no recommended lectureres found for these topics then display this-->
+            {% endif %}
+          </div>
+        {% endif %}   
+    </div>
+</body>
+</html>

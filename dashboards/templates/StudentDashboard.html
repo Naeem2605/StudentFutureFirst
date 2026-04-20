@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!--loads logout url to logout-->
+        <a href="{% url 'StudentDetails' %}">Your Details</a>
+        <a href="{% url 'StudentMarks' %}">Your Marks</a>
+        <a href="{% url 'RecommendLecturer' %}">Recommend Lecturer</a>
+        <a href="{% url 'RecommendModule' %}">Recommend Module</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Student Dashboard</h1>
+            <h2>Hello, {{student.user.first_name}}</h2> <!--display students first name-->
+        </div>
+
+        {%for message in messages%}
+          <div class="message">{{message}}</div>
+        {% endfor %}
+
+        <div class="box">         
+          <h3>Your Modules</h3>
+          {% if moduleMarks %} <!--check if student taking any modules-->
+            <ul>
+                {% for modulemark in moduleMarks%} <!--loop through modules in join table modulemark--> 
+                   <div class="box-item">  
+                      {{modulemark.module.name}} - {{modulemark.module.code}} - {{modulemark.module.description}}<br><br><!--display module info-->
+                    </div>
+                {% endfor %}
+            </ul>
+          {% else %} <!--if not taking any modules then display this message-->
+            <ul>
+              <div class="box-item">
+                <label>Not currently taking any modules</label>
+              </div>
+            </ul>
+          {% endif %}
+
+          {% if availabilitySlotsBooked %} <!--check if any slots were booked by the student-->
+              <h3>Your Bookings</h3>
+                <ul>
+                  {% for availabilitySlot in availabilitySlotsBooked%} <!--iterate though all availabilty slots the student booked-->
+                    <div class="box-item">
+                        {{availabilitySlot.day}} - {{availabilitySlot.startTime}} - {{availabilitySlot.endTime}}<br> <!--show the slots info-->
+                        With: {{availabilitySlot.staff.user.first_name}} {{availabilitySlot.staff.user.last_name}}<br> <!--show who the booking is with by using the runtime attribute attached to the availabilty record-->
+                        Staff's Email: {{availabilitySlot.staff.user.email}}<br>
+                        Taking Place In Room: {{availabilitySlot.staff.officeRoom}}<br><br><!--display the officerrom of the staff-->
+                        <form method="post">
+                            {% csrf_token %} <!--protects against cross site request forgeries-->
+                            <input type="hidden" name="availabilityID" value="{{availabilitySlot.id}}"> <!--pass availability id in hidden feild-->
+                            <button type="submit">Cancel Booking</button> 
+                         </form><br>
+                     </div>
+                   {% endfor %}
+                </ul>
+          {% else %}
+            <h3>Your Bookings</h3>
+            <ul>
+              <div class="box-item">
+                 <label>Find a recommended lecturer to make a booking</label>
+              </div>
+            </ul>
+          {% endif %}
+      </div>
+    </div>
+</body>
+</html>

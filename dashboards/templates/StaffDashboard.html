@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDetails' %}">My Details</a> <!--takes staff to staff details page-->
+        <a href="{% url 'StaffManageMyAvailability' %}">Manage My Availability</a>
+        <a href="{% url 'StaffAddMarks' %}">Add Marks</a>
+        <a href="{% url 'ManageModules' %}">Manage Modules</a>
+        <a href="{% url 'StaffManageMyModules' %}">Manage My Modules</a>
+        <a href="{% url 'ManageTopics' %}">Manage Topics</a>
+        <a href="{% url 'StaffManageMyTopics' %}">Manage My Topics</a>
+        <a href="{% url 'ManageStudents' %}">Manage Students</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Staff Dashboard</h1>
+            <h2>Hello, {{staff.user.first_name}}</h2> <!--display staffs first name-->
+        </div>
+
+        
+        <div class="box">
+          <h3>Modules You Teach</h3>
+          {% if staffModules %} <!--check if staff teaching any modules-->
+            <ul>
+               {% for module in staffModules%} <!--iterate through staff modules to display them-->
+               <div class="box-item">
+                  {{module.name}} - {{module.code}} - {{module.description}}<!--display module info-->
+               </div>
+               {% endfor %}
+            </ul>
+          {% else %}
+            <ul>
+              <div class="box-item">
+                <label>Not currently teaching any modules</label>
+              </div>
+            </ul>
+          {% endif %}
+
+          {% if staff.availability.all%} <!--check if staff has any availability slots at all before displaying your booking header-->
+            <h3>Your Bookings</h3>
+            <ul>
+              {% for availabilitySlot in staff.availability.all%} <!--iterate though all availabilty slots a staff has-->
+                 {% if availabilitySlot.student is not None%} <!--check if a student has booked the slot, if not dont print anything-->  
+                   <div class="box-item">
+                      {{availabilitySlot.day}} - {{availabilitySlot.startTime}} - {{availabilitySlot.endTime}}<br> <!--show the slots info-->
+                      With: {{availabilitySlot.student.user.first_name}} {{availabilitySlot.student.user.last_name}}<br> <!--show who the booking is with by using the runtime attribute attached to the availabilty record-->
+                      Student's Email: {{availabilitySlot.student.user.email}}<br>
+                      Taking Place In Room: {{staff.officeRoom}}<br><br><!--display the officerrom of the staff-->
+                   </div>
+                 {%endif%}
+              {% endfor %}
+           </ul>
+         {% endif %}
+        </div>
+    </div>
+</body>
+</html>

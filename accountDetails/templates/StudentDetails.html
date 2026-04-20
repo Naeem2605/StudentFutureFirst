@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Details</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StudentDashboard' %}">Student Dashboard</a> <!-- calls studentdashboard url -->
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Student Details</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+         <div class="message">{{message}}</div>
+        {% endfor %}
+
+        <div class="box">
+            <h2>Your Details</h2>
+            <div class="box-item">
+                <p>Student ID: {{student.studentID}}</p> <!--display students studentid-->
+                <p>Student Email: {{student.user.email}}
+
+                <form method="post"> <!--form to update student details-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                   <label>Username</label><br>
+                   <input type="text" name="username" value="{{student.user.username}}" required><br><br>
+
+                    <label>First Name</label><br>
+                    <input type="text" name="firstName" value="{{student.user.first_name}}" required><br><br> <!--display current student first name in textbox-->
+
+                    <label>Last Name</label><br>
+                    <input type="text" name="lastName" value="{{student.user.last_name}}" required><br><br>
+
+                    <button type="submit">Update</button> <!--button to submit form-->
+
+                </form>
+            </div>
+
+            <h2>Change Password</h2>
+            <div class="box-item">
+                <form method="post"> <!--form to change student password-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Current Password</label><br> <!--label describes what input is required-->
+                    <input type="password" name="currentPassword" required><br><br> <!--takes current password from user and is required-->
+
+                    <label>New Password</label><br>
+                    <input type="password" name="newPassword" required><br><br>
+
+                    <label>Confirm New Password</label><br>
+                    <input type="password" name="confirmNewPassword" required><br><br>
+
+                    <button type="submit">Update</button> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Manage Students</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+           <div class="message">{{message}}</div>
+        {% endfor %}
+
+        <div class="box">
+            <h2>Create Student</h2>
+            <div class="box-item">
+                <form method="post"> 
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Username</label><br> <!--displays username and then creates space using br-->
+                    <input type="text" name="username" required><br><br> <!--takes text input and it must be enetered-->
+
+                    <label>First Name</label><br>
+                    <input type="text" name="firstName" required><br><br>
+
+                    <label>Last Name</label><br>
+                    <input type="text" name="lastName" required><br><br>
+
+                    <label>Student Email</label><br>
+                    <input type="email" name="email" required><br><br> <!--takes email format input only-->
+
+                    <label>Password</label><br>
+                    <input type="password" name="password" required><br><br> <!--hides password while entered-->
+
+                    <label>Confirm Password</label><br>
+                    <input type="password" name="confirmPassword" required><br><br> <!--hides password while entered-->
+
+                    <label>StudentID</label><br>
+                    <input type="text" name="studentID" required><br><br>
+
+                    <label>Select Modules:</label><br><br>
+                    <div class="checkbox">
+                        {% for module in modules %} <!--iterate through entire Module table-->
+                         <li> <!--display checkboxes in a list-->
+                           <input type="checkbox" name="modulesIDs" value="{{module.id}}"> <!--current modules id is passed if chosen-->
+                           {{module.name}} - {{module.code}} <!--display modules name and code-->
+                         </li>
+                        {% endfor %}
+                    </div>
+                    <button type="submit">Create</button> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+
+        <div class="scroll-box">
+            <h2>Students</h2>
+            {% for student in students %} <!--all students retrived using django template language for loop-->
+                <div class="box-item">
+                    {{student.studentID}} - {{student.user.first_name}} - {{student.user.last_name}} <!--display the names and studentid of current student in the for loop-->
+                    <p>
+                    <a href="{% url 'EditStudent' student.id %}">Edit</a> <!-- calls edit student url and passes student id-->
+                    <form method="post"> <!--create a form for each student, to be able to post students id to views.py file in order to delete student-->
+                        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                       <input type="hidden" name="studentid" value="{{student.id}}"> <!--hidden field in form, user shouldnt be able to enter this. studentid of current student in for loop is extracted using student.id-->
+   
+                       {% if student.user.is_active %} <!--checks if student account is active-->
+                           <button type="submit">Deactivate Account</button> <!--Deactivate button shown if student account is active-->
+                       {% else %}
+                           <button type="submit">Activate Account</button>
+                       {% endif %}
+                    </form>
+                    </p>
+                </div>
+            <br>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

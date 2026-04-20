@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student Marks</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+        <a href="{% url 'StaffAddMarks' %}">Student List</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Add Student's Marks</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+            <div class="message">{{message}}</div>
+        {% endfor %}
+
+
+        <div class="scroll-box">
+        <h2>Marks for: {{student.studentID}} {{student.user.first_name}} {{student.user.last_name}}</h2> <!--display student details-->
+
+        <h3>Modules</h3>
+        {%if moduleMarks%} <!--check if student taking any modules-->
+            {% for moduleMark in moduleMarks %} <!--all moduleMarks retrived using django template language for loop-->
+            <div class="box-item">
+                {{moduleMark.module.name}} - {{moduleMark.module.code}} - {{moduleMark.module.description}}<br><br><!--display module info-->
+                <form method="post"> <!--create a form for each module, to be able to edit each module marks at a time-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+                    <input type="hidden" name="moduleMarkID" value="{{moduleMark.id}}"> <!--hidden field in form, user shouldnt be able to enter this. modulemarkid of current modulemark in for loop is extracted using modulemark.id-->
+                
+                    <label>Mark1</label><br>
+                    <input type="text" name="mark1" value="{{moduleMark.mark1}}"><br><br>
+                
+                    <label>Mark2</label><br>
+                    <input type="text" name="mark2" value="{{moduleMark.mark2}}"><br><br>
+
+                    <button type="submit">Update Marks</button>
+                </form>
+                <br>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="box-item">
+                <h4>Student not taking any modules</h4>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+</body>
+</html>

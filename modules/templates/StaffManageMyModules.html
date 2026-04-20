@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage My Modules</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Manage My Modules</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+           <div class="message">{{message}}</div> 
+        {% endfor %}
+
+        <div class="scroll-box">
+           <h2>Modules</h2>
+            {% for module in modules %} <!--all modules retrived using django template language for loop-->
+            <div class="box-item">
+                {{module.name}} - {{module.code}} - {{module.description}}<br><br> <!--display the module details-->
+                <form method="post"> <!--create a form for each module, to be able to post modules id to views.py file in order to add or remove it-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+                    <input type="hidden" name="moduleID" value="{{module.id}}"> <!--hidden field in form, user shouldnt be able to enter this. moduleid of current module in for loop is extracted using module.id-->
+                    {% if module in staffsModules %} <!--checks if staff already teaches this module to decide what button to show-->
+                        <button type="submit">Remove</button> <!--remove button shown if staff teaches this module already-->
+                    {% else %}
+                        <button type="submit">Add</button>
+                    {% endif %}
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

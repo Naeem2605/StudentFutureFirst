@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Add Marks</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Add Marks</h1>
+        </div>
+
+        <div class="scroll-box">
+            <h2>Select a student</h2>
+            <h3>Click 'Enter Marks' to view and update student's marks</h3>
+                {% for student in students %} <!--all students retrived using django template language for loop-->
+                <div class="box-item">
+                    {{student.studentID}} - {{student.user.first_name}} - {{student.user.last_name}}<br><br> <!--display the names and studentid of current student in the for loop-->
+                    <a href="{% url 'StaffAddStudentMarks' student.id %}">Enter Marks</a> <!-- calls StaffAddStudentMarks url and passes student id in the url-->    
+                </div>
+            {% endfor %}         
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Topics</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Manage Topics</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+         <div class="message">{{message}}</div> 
+        {% endfor %}
+
+        <div class="box">
+            <h2>Create Topic</h2>
+            <div class="box-item">
+                <form method="post">
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Topic Name</label><br> <!--displays Topic Name and then creates space using br-->
+                    <input type="text" name="name"><br><br> <!--takes text input-->
+
+                    <button type="submit">Create</button><br> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+
+        <div class="scroll-box">
+            <h2>Topics</h2>
+                {% for topic in topics %} <!--all topics retrived using django template language for loop-->
+                <div class="box-item">
+                    {{topic.name}}<br><br> <!--display the name of current topic in the for loop-->
+                    <form method="post"> <!--create a form for each topic, to be able to post topics id to views.py file in order to delete topic-->
+                        {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                        <input type="hidden" name="topicID" value="{{topic.id}}"> <!--hidden field in form, user shouldnt be able to enter this. topicid of current topic in for loop is extracted using topic.id-->
+                        <button type="submit">Delete</button> <!--button to submit form-->
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

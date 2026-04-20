@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="centered-box">
+        <h1>StudentFutureFirst</h1>
+        <a href="{% url 'Login' %}">Login</a>
+        <a href="{% url 'Register' %}">Register</a>
+    </div>
+
+</body>
+</html>

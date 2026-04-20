@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <a href="{% url 'Homepage' %}">Homepage</a>
+        <a href="{% url 'Login' %}">Login</a>
+    </div>
+
+    <div class="page-content">
+        {% for message in messages %} <!--display error messages-->
+         <div class="message">{{message}}</div>
+        {% endfor %}
+        
+        <div class="box">
+            <h1>Staff Registration page</h1>
+            <div class="box-item">
+                <form method="post">
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Username</label><br> <!--displays username and then creates space using br-->
+                    <input type="text" name="username" required><br><br> <!--takes text input and it must be enetered-->
+
+                    <label>First Name</label><br>
+                    <input type="text" name="firstName" required><br><br>
+
+                    <label>Last Name</label><br>
+                    <input type="text" name="lastName" required><br><br>
+
+                    <label>Staff Email</label><br>
+                    <input type="email" name="email" required><br><br> <!--takes email format input only-->
+
+                    <label>Password</label><br>
+                    <input type="password" name="password" required><br><br> <!--hides password while entered-->
+
+                    <label>Confirm Password</label><br>
+                    <input type="password" name="confirmPassword" required><br><br> <!--hides password while entered-->
+
+                    <label>StaffID</label><br><!--enter staffs staffID, not the same as the id of the staff record (simply just another field)-->
+                    <input type="text" name="staffID" required><br><br>
+
+                    <button type="submit">Register</button> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

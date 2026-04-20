@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Details</title>
+    <link rel="stylesheet" href="{% static 'style.css'%}">
+</head>
+<body>
+    
+    <div class="navbar">
+        <a href="{% url 'Logout' %}">Logout</a> <!-- calls Logout url -->
+        <a href="{% url 'StaffDashboard' %}">Staff Dashboard</a>
+    </div>
+
+    <div class="page-content">
+        <div class="box">
+            <h1>Staff Details</h1>
+        </div>
+
+        {% for message in messages %} <!--display messages-->
+         <div class="message">{{message}}</div>
+        {% endfor %}
+
+        <div class="box">
+            <h2>Your Details</h2>
+            <div class="box-item"> 
+                <p>Staff ID: {{staff.staffID}}</p> <!--display staff staffid-->
+                <p>Staff Email: {{staff.user.email}}
+
+                <form method="post"> <!--form to update staff details-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Username</label><br>
+                    <input type="text" name="username" value="{{staff.user.username}}" required><br><br>
+        
+                    <label>First Name</label><br>
+                    <input type="text" name="firstName" value="{{staff.user.first_name}}" required><br><br> <!--display current student first name in textbox-->
+
+                    <label>Last Name</label><br>
+                    <input type="text" name="lastName" value="{{staff.user.last_name}}" required><br><br>
+
+                    <label>Office Room</label><br>
+                    <input type="text" name="officeRoom" value="{{staff.officeRoom}}" required><br><br> <!--display staffs office room in the text box-->
+
+                    <button type="submit">Update</button> <!--button to submit form-->
+
+                </form>
+            </div><br>
+        
+
+            <h2>Change Password</h2>
+            <div class="box-item"> 
+                <form method="post"> <!--form to change staff password-->
+                    {% csrf_token %} <!--protects against cross site request forgeries-->
+
+                    <label>Current Password</label><br> <!--label describes what input is required-->
+                    <input type="password" name="currentPassword" required><br><br> <!--takes current password from user and is required-->
+
+                    <label>New Password</label><br>
+                    <input type="password" name="newPassword" required><br><br> <!--text box hides password input to prvent shoulder surfing-->
+
+                    <label>Confirm New Password</label><br>
+                    <input type="password" name="confirmNewPassword" required><br><br>
+
+                    <button type="submit">Update</button> <!--button to submit form-->
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
